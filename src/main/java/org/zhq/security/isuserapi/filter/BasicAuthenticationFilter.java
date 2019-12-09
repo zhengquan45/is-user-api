@@ -37,7 +37,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
             User user = userRepository.findByUsername(username);
             if(user!=null && SCryptUtil.check(password,user.getPassword())){
                 httpServletRequest.getSession().setAttribute("user",user.buildInfo());
-                httpServletRequest.getSession().setAttribute("temp",true);
+                httpServletRequest.getSession().setAttribute("temp","yes");
             }
         }
 
@@ -45,7 +45,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(httpServletRequest,httpServletResponse);
         }finally {
             HttpSession session = httpServletRequest.getSession();
-            if((Boolean) session.getAttribute("temp")){
+            if("yes".equals(session.getAttribute("temp"))){
                 session.invalidate();
             }
         }

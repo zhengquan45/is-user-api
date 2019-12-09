@@ -35,13 +35,15 @@ public class SecurityConfig implements WebMvcConfigurer {
 
     @Bean
     public AuditorAware<String> auditorAware(){
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        UserInfo user = (UserInfo) servletRequestAttributes.getRequest().getSession().getAttribute("user");
-        String username = null;
-        if(user!=null){
-            username = user.getUsername();
-        }
-        String name = username;
-        return () -> Optional.of(name);
+        return () -> {
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            UserInfo user = (UserInfo)requestAttributes.getRequest().getSession().getAttribute("user");
+            String username = null;
+            if(user!=null){
+                username = user.getUsername();
+            }
+            return Optional.ofNullable(username);
+        };
+
     }
 }

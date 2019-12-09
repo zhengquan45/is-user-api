@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,13 +25,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserInfo update(UserInfo user) {
-        return null;
+    public UserInfo update(UserInfo userInfo) {
+        User user = new User();
+        BeanUtils.copyProperties(userInfo,user);
+        userRepository.save(user);
+        return userInfo;
     }
 
     @Override
     public void delete(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -40,11 +44,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> query(String name) {
-        return null;
+        List<User> userList = userRepository.findAllByUsername(name);
+        List<UserInfo> userInfoList = userList.stream().map(User::buildInfo).collect(Collectors.toList());
+        return userInfoList;
     }
 
     @Override
     public UserInfo login(UserInfo userInfo) {
-        return null;
+        User user = userRepository.findUserByUsernameAndAndPassword(userInfo.getUsername(), userInfo.getPassword());
+        return user.buildInfo();
     }
 }

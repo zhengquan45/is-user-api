@@ -1,12 +1,12 @@
 package org.zhq.security.isuserapi.user;
 
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 public interface UserService {
 
-    UserInfo create(UserInfo user);
+    default UserInfo create(UserInfo user){
+        return user;
+    }
 
     UserInfo update(UserInfo user);
 

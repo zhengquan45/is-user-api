@@ -15,7 +15,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping("/login")
     public void login(@Validated UserInfo userInfo,HttpServletRequest request) {
         UserInfo info = userService.login(userInfo);
@@ -27,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public void logout(@Validated UserInfo userInfo,HttpServletRequest request) {
+    public void logout(HttpServletRequest request) {
         request.getSession().invalidate();
     }
 
@@ -49,7 +48,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public UserInfo get(@PathVariable Long id, HttpServletRequest request) {
-        UserInfo user = (UserInfo) request.getAttribute("user");
+        UserInfo user = (UserInfo) request.getSession().getAttribute("user");
         if(user ==null ||!user.getId().equals(id)){
             throw new RuntimeException("Authentication exception. get userInfo fail");
         }
