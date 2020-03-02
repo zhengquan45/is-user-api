@@ -2,6 +2,7 @@ package org.zhq.security.isuserapi.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.lambdaworks.crypto.SCryptUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 @Component
 @Order(2)
+@Slf4j
 public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -26,7 +28,7 @@ public class BasicAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println(2);
+        log.info("authorize ... ");
         String authHeader = httpServletRequest.getHeader("Authorization");
         if(StrUtil.isNotBlank(authHeader)){
             String token64 = StrUtil.subAfter(authHeader, "Basic ",false);

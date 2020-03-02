@@ -4,9 +4,7 @@ import java.util.List;
 
 public interface UserService {
 
-    default UserInfo create(UserInfo user){
-        return user;
-    }
+    UserInfo create(UserInfo user);
 
     UserInfo update(UserInfo user);
 

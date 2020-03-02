@@ -1,5 +1,6 @@
 package org.zhq.security.isuserapi.intercepter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
+@Slf4j
 public class AuditLogInterceptor  extends HandlerInterceptorAdapter {
 
     @Autowired
@@ -18,7 +20,7 @@ public class AuditLogInterceptor  extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println(3);
+        log.info("audit log saving ... ");
         AuditLog log = new AuditLog();
         log.setMethod(request.getMethod());
         log.setPath(request.getRequestURI());
